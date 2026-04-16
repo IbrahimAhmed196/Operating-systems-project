@@ -18,104 +18,107 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cpuscheduler.FXMLDocumentController">
-   <left>
-      <VBox spacing="15.0" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <children>
-            <Label text="Scheduler Setup">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="schedulerType" prefWidth="150.0">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets></ComboBox>
-            <Separator prefWidth="200.0" />
-            <Label text="Arrival Time:" />
-            <TextField promptText="Arrival Time" />
-            <Label text="Burst Time:" />
-            <TextField promptText="Burst Time" />
-            <Label fx:id="priorityLabel" text="Priority:" />
-            <TextField fx:id="priorityField" promptText="Priority" />
-            <Button mnemonicParsing="false" text="Add Process" />
-            <Separator prefWidth="200.0" />
-            <Label prefHeight="10.0" prefWidth="88.0" text="Simulation Type:" />
-            <HBox prefHeight="38.0" prefWidth="200.0" spacing="50.0">
-               <children>
-                  <RadioButton fx:id="radioStatic" mnemonicParsing="false" text="Static">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="simType" />
-                     </toggleGroup></RadioButton>
-                  <RadioButton fx:id="radioDynamic" mnemonicParsing="false" text="Dynamic" toggleGroup="$simType" />
-               </children>
-            </HBox>
-            <Separator prefWidth="200.0" />
-            <HBox prefHeight="41.0" prefWidth="200.0" spacing="50.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="67.0" text="Start" />
-                  <Button fx:id="pauseBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="65.0" text="Pause" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <TableView layoutX="64.0" layoutY="2.4" prefHeight="342.0" prefWidth="592.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="102.0" AnchorPane.topAnchor="2.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="Process" />
-                      <TableColumn prefWidth="75.0" text="Arrival" />
-                        <TableColumn prefWidth="75.0" text="Burst" />
-                        <TableColumn prefWidth="100.79997253417969" text="Remaining Burst" />
-                        <TableColumn prefWidth="66.39996337890625" text="Priority" />
-                        <TableColumn prefWidth="80.79998779296875" text="Wait Time" />
-                        <TableColumn prefWidth="117.5999755859375" text="Turnaround Time" />
-                    </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <ScrollPane fitToHeight="true" layoutX="1.0" layoutY="14.0" prefHeight="194.0" prefWidth="746.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="179.0" prefWidth="745.0">
-                           <children>
-                              <HBox layoutX="7.0" layoutY="40.0" prefHeight="100.0" prefWidth="732.0" />
-                              <Label layoutX="14.0" layoutY="14.0" text="Gantt Chart:">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </center>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Average Waiting Time: 0.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label text="Average Turnaround Time: 0.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </bottom>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
+    <left>
+        <VBox spacing="15.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label text="Scheduler Setup">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="schedulerType" prefWidth="150.0">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets></ComboBox>
+                <Separator prefWidth="200.0" />
+            <Label fx:id="qrrfield" text="Quantum Time:" />
+            <TextField fx:id="qrrtext" promptText="Quantum Time (RR)" />
+                <Label text="Arrival Time:" />
+                <TextField promptText="Arrival Time" />
+                <Label text="Burst Time:" />
+                <TextField promptText="Burst Time" />
+                <Label fx:id="priorityLabel" text="Priority:" />
+                <TextField fx:id="priorityField" promptText="Priority" />
+                <Button mnemonicParsing="false" text="Add Process" />
+                <Separator prefWidth="200.0" />
+                <Label prefHeight="10.0" prefWidth="88.0" text="Simulation Type:" />
+                <HBox prefHeight="38.0" prefWidth="200.0" spacing="50.0">
+                    <children>
+                        <RadioButton fx:id="radioStatic" mnemonicParsing="false" text="Static">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="simType" />
+                            </toggleGroup></RadioButton>
+                        <RadioButton fx:id="radioDynamic" mnemonicParsing="false" text="Dynamic" toggleGroup="$simType" />
+                    </children>
+                </HBox>
+                <Separator prefWidth="200.0" />
+                <HBox prefHeight="41.0" prefWidth="200.0" spacing="50.0">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="67.0" text="Start" />
+                        <Button fx:id="pauseBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="65.0" text="Pause" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <TableView layoutX="39.0" layoutY="2.0" prefHeight="292.0" prefWidth="680.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="2.0">
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="Process" />
+                        <TableColumn prefWidth="87.0" text="Process Color" />
+                                <TableColumn prefWidth="75.0" text="Arrival" />
+                                <TableColumn prefWidth="75.0" text="Burst" />
+                                <TableColumn prefWidth="100.79997253417969" text="Remaining Burst" />
+                                <TableColumn prefWidth="66.39996337890625" text="Priority" />
+                                <TableColumn prefWidth="80.79998779296875" text="Wait Time" />
+                                <TableColumn prefWidth="117.5999755859375" text="Turnaround Time" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <ScrollPane fitToHeight="true" layoutX="1.0" layoutY="14.0" prefHeight="194.0" prefWidth="746.0">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="179.0" prefWidth="745.0">
+                                    <children>
+                                        <HBox layoutX="7.0" layoutY="40.0" prefHeight="100.0" prefWidth="732.0" />
+                                        <Label layoutX="14.0" layoutY="14.0" text="Gantt Chart:">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Average Waiting Time: 0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label text="Average Turnaround Time: 0.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </bottom>
 </BorderPane>
