@@ -14,11 +14,12 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLDocumentController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cpuscheduler.FXMLDocumentController">
     <left>
         <VBox spacing="15.0" BorderPane.alignment="CENTER">
             <padding>
@@ -37,13 +38,13 @@
                 <Separator prefWidth="200.0" />
             <Label fx:id="qrrfield" text="Quantum Time:" />
             <TextField fx:id="qrrtext" promptText="Quantum Time (RR)" />
-                <Label text="Arrival Time:" />
-                <TextField promptText="Arrival Time" />
-                <Label text="Burst Time:" />
-                <TextField promptText="Burst Time" />
+                <Label fx:id="arrivalLabel" text="Arrival Time:" />
+                <TextField fx:id="arrivalField" promptText="Arrival Time" />
+                <Label fx:id="burstLabel" text="Burst Time:" />
+                <TextField fx:id="burstField" promptText="Burst Time" />
                 <Label fx:id="priorityLabel" text="Priority:" />
                 <TextField fx:id="priorityField" promptText="Priority" />
-                <Button mnemonicParsing="false" text="Add Process" />
+                <Button fx:id="addProcessBtn" mnemonicParsing="false" onAction="#handleAddProcess" text="Add Process" />
                 <Separator prefWidth="200.0" />
                 <Label prefHeight="10.0" prefWidth="88.0" text="Simulation Type:" />
                 <HBox prefHeight="38.0" prefWidth="200.0" spacing="50.0">
@@ -58,10 +59,12 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="41.0" prefWidth="200.0" spacing="50.0">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="67.0" text="Start" />
-                        <Button fx:id="pauseBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="65.0" text="Pause" />
+                        <Button fx:id="startBtn" mnemonicParsing="false" onAction="#handleStart" prefHeight="34.0" prefWidth="67.0" text="Start" />
+                        <Button fx:id="pauseBtn" mnemonicParsing="false" onAction="#handlePause" prefHeight="35.0" prefWidth="65.0" text="Pause" />
                     </children>
                 </HBox>
+                <Label fx:id="statusLabel" text="" wrapText="true" prefWidth="200.0" />
+            <Button mnemonicParsing="false" onAction="#handleReset" prefHeight="55.0" prefWidth="185.0" text="Reset" />
             </children>
         </VBox>
     </left>
@@ -70,50 +73,51 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <TableView layoutX="39.0" layoutY="2.0" prefHeight="292.0" prefWidth="680.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="2.0">
+                        <TableView fx:id="tableView" layoutX="83.0" layoutY="2.0" prefHeight="291.0" prefWidth="593.0" AnchorPane.bottomAnchor="3.599999999999966" AnchorPane.leftAnchor="83.0" AnchorPane.rightAnchor="82.60000000000002" AnchorPane.topAnchor="2.0">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Process" />
-                        <TableColumn prefWidth="87.0" text="Process Color" />
-                                <TableColumn prefWidth="75.0" text="Arrival" />
-                                <TableColumn prefWidth="75.0" text="Burst" />
-                                <TableColumn prefWidth="100.79997253417969" text="Remaining Burst" />
-                                <TableColumn prefWidth="66.39996337890625" text="Priority" />
-                                <TableColumn prefWidth="80.79998779296875" text="Wait Time" />
-                                <TableColumn prefWidth="117.5999755859375" text="Turnaround Time" />
+                                <TableColumn fx:id="colProcess" prefWidth="75.0" text="Process" />
+                                <TableColumn fx:id="colArrival" prefWidth="75.0" text="Arrival" />
+                                <TableColumn fx:id="colBurst" prefWidth="75.0" text="Burst" />
+                                <TableColumn fx:id="colRemaining" prefWidth="100.79997253417969" text="Remaining Burst" />
+                                <TableColumn fx:id="colPriority" prefWidth="66.39996337890625" text="Priority" />
+                                <TableColumn fx:id="colWaiting" prefWidth="80.79998779296875" text="Wait Time" />
+                                <TableColumn fx:id="colTurnaround" prefWidth="117.5999755859375" text="Turnaround Time" />
                             </columns>
                         </TableView>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                     <children>
-                        <ScrollPane fitToHeight="true" layoutX="1.0" layoutY="14.0" prefHeight="194.0" prefWidth="746.0">
+                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" layoutX="1.0" layoutY="14.0" prefHeight="194.0" prefWidth="746.0">
                             <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="179.0" prefWidth="745.0">
-                                    <children>
-                                        <HBox layoutX="7.0" layoutY="40.0" prefHeight="100.0" prefWidth="732.0" />
-                                        <Label layoutX="14.0" layoutY="14.0" text="Gantt Chart:">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                </AnchorPane>
+                                <VBox alignment="CENTER">
+                                    <HBox fx:id="ganttBox" spacing="0" />
+                                    <Pane fx:id="timeBox" prefHeight="25.0" />
+                           <padding>
+                              <Insets top="20.0" />
+                           </padding>
+                                </VBox>
                             </content>
                         </ScrollPane>
+                  <Label fx:id="timerLabel" layoutX="298.0" layoutY="233.0" text="Simulation Time:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                     </children>
                 </AnchorPane>
             </items>
         </SplitPane>
     </center>
     <bottom>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER" prefHeight="69.0" prefWidth="1000.0" spacing="50.0" BorderPane.alignment="CENTER">
             <children>
-                <Label text="Average Waiting Time: 0.0">
+                <Label fx:id="avgWaitingLabel" text="Average Waiting Time: 0.0">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label text="Average Turnaround Time: 0.0">
+                <Label fx:id="avgTurnaroundLabel" text="Average Turnaround Time: 0.0">
                     <font>
                         <Font size="18.0" />
                     </font>

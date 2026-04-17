@@ -10,4 +10,6 @@ public interface Scheduler {
     List<Process> getAllProcesses(); // To update your JavaFX Table
     double getAverageWaitingTime();
     double getAverageTurnaroundTime();
+    Process getLastExecutedProcess();
+    int getCurrentTime();
 }

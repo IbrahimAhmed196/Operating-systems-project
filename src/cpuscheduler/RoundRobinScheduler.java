@@ -1,15 +1,21 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package cpuscheduler;
-
 import java.util.*;
-
+/**
+ *
+ * @author IbrahimAhmedBadr
+ */
 public class RoundRobinScheduler implements Scheduler {
-
     private List<Process> processes = new ArrayList<>();
     private Queue<Process> readyQueue = new LinkedList<>();
 
     private Set<String> inQueue = new HashSet<>();
 
     private Process currentProcess = null;
+    private Process lastExecutedProcess = null;
     private int time = 0;
 
     private int quantum;
@@ -51,10 +57,12 @@ public class RoundRobinScheduler implements Scheduler {
         }
 
         if (currentProcess == null) {
+            lastExecutedProcess = null;
             time++;
             return;
         }
 
+        lastExecutedProcess = currentProcess;
         currentProcess.remainingTime--;
         remainingQuantum--;
         time++;
@@ -69,6 +77,7 @@ public class RoundRobinScheduler implements Scheduler {
             currentProcess.waitingTime =
                     currentProcess.turnaroundTime - currentProcess.burstTime;
 
+            lastExecutedProcess = currentProcess;
             currentProcess = null;
         }
         else if (remainingQuantum == 0) {
@@ -80,6 +89,11 @@ public class RoundRobinScheduler implements Scheduler {
     @Override
     public Process getCurrentProcess() {
         return currentProcess;
+    }
+
+    @Override
+    public Process getLastExecutedProcess() {
+        return lastExecutedProcess;
     }
 
     @Override
@@ -107,5 +121,10 @@ public class RoundRobinScheduler implements Scheduler {
         double sum = 0;
         for (Process p : processes) sum += p.turnaroundTime;
         return processes.isEmpty() ? 0 : sum / processes.size();
+    }
+    
+    @Override
+    public int getCurrentTime() {
+        return time;
     }
 }
